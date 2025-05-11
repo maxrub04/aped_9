@@ -149,6 +149,7 @@ public class DbService : IDbService
             await transaction.RollbackAsync();
             throw;
         }
+        // END TRANSACTION
     }
 
     public async Task<int> AddProductToWarehouseWithProcAsync(Request request)
@@ -168,14 +169,15 @@ public class DbService : IDbService
         {
             var result = await command.ExecuteScalarAsync();
             if (result == null || !int.TryParse(result.ToString(), out int id))
-                throw new Exception("Procedure failed to return valid ID.");
+                throw new Exception(" Failed to return valid ID");
 
             return id;
         }
         catch (SqlException ex)
         {
-            throw new ArgumentException($"Stored procedure error: {ex.Message}");
+            throw new ArgumentException($"Error: {ex.Message}");
         }
+        // END TRANSACTION
     }
 
 }
